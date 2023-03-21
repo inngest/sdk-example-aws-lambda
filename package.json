@@ -1,0 +1,20 @@
+{
+  "name": "sdk-example-aws-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "volta": {
+    "node": "18.15.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.12"
+  },
+  "dependencies": {
+    "inngest": "^1.4.1"
+  }
+}
