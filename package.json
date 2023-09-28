@@ -15,6 +15,6 @@
     "esbuild": "^0.17.12"
   },
   "dependencies": {
-    "inngest": "^1.4.1"
+    "inngest": "^2.7.2"
   }
 }
