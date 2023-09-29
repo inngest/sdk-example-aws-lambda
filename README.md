@@ -4,14 +4,18 @@ This is an [AWS Lambda container image](https://docs.aws.amazon.com/lambda/lates
 
 ## Getting Started
 
-```bash
-# Build and start
-npm install
-docker build -t example .
-docker run -p 9000:8080 example
+Build and run your Lambda image locally:
 
-# Test
-curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+```bash
+npm install
+make build
+make run
+```
+
+Run the Inngest dev server:
+
+```
+make dev-server
 ```
 
 ## Learn More

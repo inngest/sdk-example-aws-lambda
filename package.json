@@ -15,6 +15,7 @@
     "esbuild": "^0.17.12"
   },
   "dependencies": {
+    "@types/node": "^20.7.2",
     "inngest": "^2.7.2"
   }
 }

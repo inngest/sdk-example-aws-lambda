@@ -8,7 +8,9 @@ const fn = inngest.createFunction(
   { event: "test/hello.world" },
   async ({ event }) => {
     return "Hello World";
-  }
+  },
 );
 
-export const handler = serve(inngest, [fn]);
+export const handler = serve(inngest, [fn], {
+  inngestRegisterUrl: process.env.INNGEST_REGISTER_URL,
+});
