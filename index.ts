@@ -1,14 +1,19 @@
 import { Inngest } from "inngest";
 import { serve } from "inngest/lambda";
 
-const inngest = new Inngest({ name: "My Lambda App" });
+const inngest = new Inngest({ name: "Inngest Lambda Example" });
 
-const fn = inngest.createFunction(
+const helloWorld = inngest.createFunction(
   { name: "Hello World" },
   { event: "test/hello.world" },
-  async ({ event }) => {
+  async ({ event, step }) => {
+    await step.sleep("1s");
     return "Hello World";
   }
 );
 
-export const handler = serve(inngest, [fn]);
+const optionalConfigForLocalTesting = {
+    ...(process?.env?.INNGEST_REGISTER_URL && {inngestRegisterUrl: process.env.INNGEST_REGISTER_URL}),
+}
+
+export const handler = serve(inngest, [helloWorld], optionalConfigForLocalTesting)
