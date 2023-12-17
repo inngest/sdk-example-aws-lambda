@@ -17,6 +17,6 @@
   "dependencies": {
     "@types/node": "^18.18.1",
     "aws-lambda": "^1.0.7",
-    "inngest": "^2.7.2"
+    "inngest": "^3.7.3"
   }
 }

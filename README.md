@@ -8,11 +8,15 @@ This is an [AWS Lambda container image](https://docs.aws.amazon.com/lambda/lates
 # Build and start
 npm install
 docker build -t example .
-docker run -p 9000:8080 example
 
-# Test
-curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+# Run your container and set the base URL for the dev server to use the Docker host network
+docker run -p 9000:8080 -e INNGEST_BASE_URL=http://host.docker.internal:8288 example
+
+# Run the dev server to test your functions
+npx inngest-cli@latest dev -u http://localhost:9000/2015-03-31/functions/function/invocations
 ```
+
+Then open [http://localhost:8288](http://localhost:8288) to view and test your functions.
 
 ## Deploying to AWS Lambda
 
@@ -27,7 +31,7 @@ You'll need to install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/user
 
 ### Create an AWS ECR repository
 
-You can create an Elastic Container Registry (ECR) repository using the AWS 
+You can create an Elastic Container Registry (ECR) repository using the AWS
 web console or the AWS CLI. To create a repository using the AWS CLI, run:
 
 ```shell
@@ -58,8 +62,8 @@ This will output the following:
 
 The `repositoryUri` is the URI of your repository, which you will need to push images to.
 
-[!note] the `YOUR_REPOSITORY_ID` is the ID of your repository, which you 
-will need to push images to. It will vary from the example above. You can 
+[!note] the `YOUR_REPOSITORY_ID` is the ID of your repository, which you
+will need to push images to. It will vary from the example above. You can
 set it in your shell with the following command and then access it with `${YOUR_REPOSITORY_ID}`:
 
 ```shell
@@ -94,8 +98,8 @@ Now you can build the image, run:
 docker build --platform linux/amd64 -t inngest-example .
 ```
 
-NOTE: If you are on a computer that isn't running `amd64` architecture, you 
-will need to add `--platform linux/amd64` to the build command for the 
+NOTE: If you are on a computer that isn't running `amd64` architecture, you
+will need to add `--platform linux/amd64` to the build command for the
 Docker image you intend to push.
 
 To tag the image, run:
@@ -144,17 +148,17 @@ To create a function URL, run:
 aws lambda create-function-url-config --function-name inngest-example --auth-type NONE
 ```
 
-This will give you output that contains the URL for your new function. 
+This will give you output that contains the URL for your new function.
 You'll also be able to find the URL in the AWS Console.
 
-This is SO CLOSE, but we need to log in to the AWS Console and perform 
+This is SO CLOSE, but we need to log in to the AWS Console and perform
 `click-ops` to add resource based permissions to the Lambda function.
 
 Log in to the AWS Console and navigate to the Lambda function you just created.
 
 ![screenshot of lambdas in aws console](./images/aws-console-lambdas.png)
 
-Now open the configuration tab, scroll down to `Resource-based policy 
+Now open the configuration tab, scroll down to `Resource-based policy
 statements` and click `Add Permission`:
 
 ![screenshot of configuration tab](./images/aws-console-lambda-add-permissions.png)
@@ -163,11 +167,11 @@ Select `Function URL` with Auth type of `None` and click `Save`.
 
 ![screenshot of add permissions dialog](./images/aws-console-add-permissions-dialog.png)
 
-Note that you could do all of the Lambda function configuration outlined 
-above in the AWS console, but since you are uploading Docker images and 
+Note that you could do all of the Lambda function configuration outlined
+above in the AWS console, but since you are uploading Docker images and
 doing the rest in the cli, it's easier to do it all in the cli.
 
-It's also likely possible to do the last step in the cli, but I haven't 
+It's also likely possible to do the last step in the cli, but I haven't
 figured it out. If you know the command, please submit a PR!
 
 ## Testing the Lambda function
@@ -175,19 +179,24 @@ figured it out. If you know the command, please submit a PR!
 Visit the URL for your Lambda function in a browser or with curl.
 
 ```json
-{"message":"Inngest endpoint configured correctly.","hasEventKey":false,"hasSigningKey":false,"functionsFound":1}
+{
+  "message": "Inngest endpoint configured correctly.",
+  "hasEventKey": false,
+  "hasSigningKey": false,
+  "functionsFound": 1
+}
 ```
 
 🎉🎉🎉
 
-We are missing two key pieces here. The Event Key and the Signing Key. Both 
+We are missing two key pieces here. The Event Key and the Signing Key. Both
 of these can be found in your Inngest Cloud dashboard.
 
 Find your Signing key here: https://app.inngest.com/env/production/deploys/
 
 Find your Event key here: https://app.inngest.com/env/production/manage/keys
 
-Within the Lambda configuration tab, scroll down to `Environment variables` 
+Within the Lambda configuration tab, scroll down to `Environment variables`
 and open that page:
 
 ![screenshot of environment variables](./images/aws-console-environment.png)
