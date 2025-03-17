@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js"
+    "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "build:docker": "docker build -t inngest-app .",
+    "run:docker": "docker run --rm -p 9000:8080 -e INNGEST_DEV=http://host.docker.internal:8288 --name inngest-app inngest-app"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +19,6 @@
   "dependencies": {
     "@types/node": "^18.18.1",
     "aws-lambda": "^1.0.7",
-    "inngest": "^3.7.3"
+    "inngest": "^3.32.8"
   }
 }

@@ -7,10 +7,10 @@ This is an [AWS Lambda container image](https://docs.aws.amazon.com/lambda/lates
 ```shell
 # Build and start
 npm install
-docker build -t example .
+docker build -t inngest-app .
 
 # Run your container and set the base URL for the dev server to use the Docker host network
-docker run -p 9000:8080 -e INNGEST_BASE_URL=http://host.docker.internal:8288 example
+docker run -p 9000:8080 -e INNGEST_DEV=http://host.docker.internal:8288 --name inngest-app inngest-app
 
 # Run the dev server to test your functions
 npx inngest-cli@latest dev -u http://localhost:9000/2015-03-31/functions/function/invocations
